@@ -4,7 +4,7 @@ from flask_restful import Api
 from config import Config
 from resources.follow import FollowResource
 from resources.like import likeResource
-from resources.posting import ModifyPostingResource, MyPostingResource, PostingResource, followeePostingResource
+from resources.posting import ModifyPostingResource, MyPostingResource, PostingResource, TagPostingResource, followeePostingResource
 from resources.user import UserLoginResource, UserRegisterResource, UserLogoutResource
 from resources.user import jwt_blacklist
 
@@ -29,6 +29,7 @@ api.add_resource(PostingResource, '/posting')
 api.add_resource(MyPostingResource, '/posting/me')
 api.add_resource(ModifyPostingResource, '/posting/<int:postingId>')
 api.add_resource(followeePostingResource, '/posting/followee')
+api.add_resource(TagPostingResource, '/posting/tag')
 
 api.add_resource(FollowResource, '/follow/<int:followeeId>')
 api.add_resource(likeResource, '/like/<int:postingId>')

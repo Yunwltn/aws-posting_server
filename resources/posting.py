@@ -349,3 +349,43 @@ class followeePostingResource(Resource) :
 
         return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200
 
+class TagPostingResource(Resource) :
+    # 해당 태그가 들어있는 포스팅 리스트만 가져오는 API
+    @jwt_required()
+    def get(slef) :
+        name = request.args.get('name')
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+
+        try :
+            connection = get_connection()
+
+            query = '''select t.postingId, p.userId, p.imgUrl, p.content, p.updatedAt
+                    from tag t
+                    left join tag_name tn on t.tagId = tn.id
+                    left join posting p on t.postingId = p.id
+                    where tn.name like '%''' + name + '''%';
+                    limit ''' + offset + ''' , ''' + limit + ''' ; '''
+                    
+            cursor = connection.cursor(dictionary= True)
+
+            cursor.execute(query, )
+
+            result_list = cursor.fetchall()
+
+            i = 0
+            for row in result_list :
+                result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+                i = i + 1
+
+            cursor.close()
+            connection.close()
+
+        except Error as e :
+            print(e)
+            cursor.close()
+            connection.close()
+
+            return {"error" : str(e)}, 500
+
+        return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200
