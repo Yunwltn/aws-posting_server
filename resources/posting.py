@@ -315,7 +315,7 @@ class followeePostingResource(Resource) :
 
             query = '''select p.id, p.imgUrl, p.content, u.id, u.email, p.updatedAt,
                     ifnull(count(postingId), 0) as likeCnt,
-                    if(l.userId is null, 0, 1) as 'favorite'
+                    if(l.userId is null, 0, 1) as 'isLike'
                     from follow f
                     left join posting p on f.followeeId = p.userId
                     left join user u on f.followeeId = u.id
@@ -368,7 +368,7 @@ class TagPostingResource(Resource) :
                     where tn.name like '%''' + name + '''%';
                     limit ''' + offset + ''' , ''' + limit + ''' ; '''
                     
-            cursor = connection.cursor(dictionary= True, buffered = True)
+            cursor = connection.cursor(dictionary= True)
 
             cursor.execute(query, )
 
