@@ -368,7 +368,7 @@ class TagPostingResource(Resource) :
                     where tn.name like '%''' + name + '''%';
                     limit ''' + offset + ''' , ''' + limit + ''' ; '''
                     
-            cursor = connection.cursor(dictionary= True)
+            cursor = connection.cursor(dictionary= True, buffered = True)
 
             cursor.execute(query, )
 
@@ -390,4 +390,3 @@ class TagPostingResource(Resource) :
             return {"error" : str(e)}, 500
 
         return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200
-        
