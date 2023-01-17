@@ -354,6 +354,7 @@ class TagPostingResource(Resource) :
     # 해당 태그가 들어있는 포스팅 리스트만 가져오는 API
     @jwt_required()
     def get(slef) :
+        userId = get_jwt_identity()
         name = request.args.get('name')
         offset = request.args.get('offset')
         limit = request.args.get('limit')
@@ -361,22 +362,27 @@ class TagPostingResource(Resource) :
         try :
             connection = get_connection()
 
-            query = '''select t.postingId, p.userId, p.imgUrl, p.content, p.updatedAt
-                    from tag t
-                    left join tag_name tn on t.tagId = tn.id
-                    left join posting p on t.postingId = p.id
-                    where tn.name like '%''' + name + '''%'
+            query = '''select u.email, p.imgUrl, p.content, p.createdAt, t.postingId,
+                    if(l.userId is null, 0, 1) as 'isLike'
+                    from tag_name tn
+                    left join tag t on tn.id = t.tagId
+                    join posting p on t.postingId = p.id
+                    join user u on p.userId = u.id
+                    left join `like` l on l.userId = %s and p.id = l.postingId
+                    where name = %s
                     limit ''' + offset + ''' , ''' + limit + ''' ; '''
+
+            record = (userId, name)
                     
             cursor = connection.cursor(dictionary= True)
 
-            cursor.execute(query, )
+            cursor.execute(query, record)
 
             result_list = cursor.fetchall()
 
             i = 0
             for row in result_list :
-                result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+                result_list[i]['createdAt'] = row['createdAt'].isoformat()
                 i = i + 1
 
             cursor.close()
