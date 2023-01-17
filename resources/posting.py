@@ -365,7 +365,7 @@ class TagPostingResource(Resource) :
                     from tag t
                     left join tag_name tn on t.tagId = tn.id
                     left join posting p on t.postingId = p.id
-                    where tn.name like '%''' + name + '''%';
+                    where tn.name like '%''' + name + '''%'
                     limit ''' + offset + ''' , ''' + limit + ''' ; '''
                     
             cursor = connection.cursor(dictionary= True)
