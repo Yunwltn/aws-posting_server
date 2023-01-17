@@ -322,6 +322,7 @@ class followeePostingResource(Resource) :
                     left join posting_db.like l on p.id = l.postingId
                     where followerId = %s
                     group by p.id
+                    order by p.updatedAt desc
                     limit ''' + offset + ''' , ''' + limit + ''' ; '''
 
             record = (userId, )
