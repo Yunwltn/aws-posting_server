@@ -32,6 +32,7 @@ api.add_resource(followeePostingResource, '/posting/followee')
 api.add_resource(TagPostingResource, '/posting/tag')
 
 api.add_resource(FollowResource, '/follow/<int:followeeId>')
+
 api.add_resource(likeResource, '/like/<int:postingId>')
 
 if __name__ == '__main__' :
