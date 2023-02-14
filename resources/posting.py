@@ -34,7 +34,7 @@ class PostingResource(Resource) :
 
         # 파일명 유니크하게 변경
         current_time = datetime.now()
-        new_file_name = str(userId) + current_time.isoformat().replace(':', '_') + '.' + file.content_type.split('/')[-1]
+        new_file_name = str(userId) + current_time.isoformat().replace(':', '_') + '.' + '.jpg'
         file.filename = new_file_name
 
         # 파일 S3에 업로드 (boto3사용)
