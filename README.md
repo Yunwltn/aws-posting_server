@@ -127,5 +127,4 @@ At this point, you can run your application locally with the following command:
 ```bash
 serverless wsgi serve
 ```
-
 For additional local development capabilities of `serverless-wsgi` plugin, please refer to corresponding [GitHub repository](https://github.com/logandk/serverless-wsgi).
